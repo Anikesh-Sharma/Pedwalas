@@ -1,4 +1,6 @@
+// Cards.jsx
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
@@ -30,18 +32,18 @@ const Cards = () => {
       </div>
       <div className="mx-auto max-w-[1280px] px-6 py-6">
         <Slider {...settings}>
-          {products.map((ele, id) => (
-            <div key={id} className="p-2">
+          {products.map((ele, index) => (
+            <div key={index} className="p-2">
               <div className="bg-gray-100 w-80 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 flex flex-col">
                 {/* Image Section */}
-                <div className="">
-                  <a href="#">
+                <div>
+                  <Link to={`/product/${ele.id || index}`}>
                     <img
                       src={ele.image}
-                      alt="Product"
+                      alt={ele.name}
                       className="w-full h-full object-cover"
                     />
-                  </a>
+                  </Link>
                 </div>
                 {/* Text Section with fixed min-height */}
                 <div className="p-4 flex flex-col justify-between min-h-[96px]">
