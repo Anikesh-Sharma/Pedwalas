@@ -1,0 +1,125 @@
+{
+    "products": [
+      {
+        "name": "Blooming Floret Artificial Succulent – Vibrant Mini Faux Plants For Home & Office Décor",
+        "price": "Rs. 799.00",
+        "description": "Elevate your decor with the captivating beauty of the Artificial Magnolia Flower Stick. At 86 cm in length, this versatile piece mimics the natural look of magnolias using real-touch polyester. Offered in six vibrant colors, it’s perfect for bouquets, vases, and event arrangements.",
+        "features": {
+          "Height": "86 cm",
+          "Material": "Real-Touch Polyester",
+          "Colors": ["Rose Pink", "Cream White", "Sunshine Yellow", "Mint Green", "Ruby Red", "Dark Yellow"],
+          "Usage": "Ideal for home & office decor"
+        },
+        "image": "https://bloomingfloret.in/cdn/shop/files/BL-6318-RosePink_9.jpg?v=1732339632"
+      },
+      {
+        "name": "Elegant Blossom Artificial Rose Bouquet – Timeless Faux Floral Centerpiece",
+        "price": "Rs. 999.00",
+        "description": "Experience the timeless charm of a classic rose bouquet, recreated with premium silk. Each lifelike bloom is designed to exude luxury, making it an exquisite centerpiece for weddings, anniversaries, or upscale home decor.",
+        "features": {
+          "Length": "70 cm",
+          "Material": "Premium Silk",
+          "Colors": ["Deep Red", "Soft Pink", "Classic White", "Bold Yellow"],
+          "Usage": "Perfect for elegant centerpieces and festive arrangements"
+        },
+        "image": "https://bloomingfloret.in/cdn/shop/files/FIGPLANT-03.jpg?v=1739603027"
+      },
+      {
+        "name": "Charming Petal Artificial Orchid Arrangement – Exotic Faux Flower Display",
+        "price": "Rs. 1199.00",
+        "description": "Add an exotic flair to any space with a meticulously crafted orchid arrangement. The vibrant hues and detailed petals mirror the natural beauty of real orchids, making it ideal for offices and living spaces.",
+        "features": {
+          "Height": "50 cm",
+          "Material": "Silk and Polyester Blend",
+          "Colors": ["Purple", "White", "Magenta", "Cream"],
+          "Usage": "Best for indoor decoration and office displays"
+        },
+        "image": "https://bloomingfloret.in/cdn/shop/files/1_0ac4af52-8b37-4519-8c2f-1cd599a05662.jpg?v=1693311902"
+      },
+      {
+        "name": "Lively Lotus Artificial Water Lily Set – Refreshing Faux Floral Accent",
+        "price": "Rs. 899.00",
+        "description": "Transform your space with the serene allure of our water lily set. Designed to capture the delicate essence of natural water lilies, this set enhances modern decor and is perfect for creating a zen-inspired ambiance.",
+        "features": {
+          "Dimensions": "60 cm diameter",
+          "Material": "Real-Touch Polyester",
+          "Colors": ["Soft Pink", "Cream", "Aqua Blue"],
+          "Usage": "Ideal for indoor water features and modern decor"
+        },
+        "image": "https://bloomingfloret.in/cdn/shop/files/3_5.jpg?v=1702465596"
+      },
+      {
+        "name": "Serene Bloom Artificial Lavender Sprig – Soothing Faux Floral Accent",
+        "price": "Rs. 749.00",
+        "description": "Infuse your space with calm using our ultra-realistic artificial lavender. With a soothing palette and delicate detailing, this piece is perfect for spas, restaurants, or any room needing a gentle touch of nature.",
+        "features": {
+          "Height": "40 cm",
+          "Material": "High-Quality Polyester",
+          "Colors": ["Lavender", "Soft Purple", "White"],
+          "Usage": "Excellent for accenting indoor spaces and relaxation areas"
+        },
+        "image": "https://bloomingfloret.in/cdn/shop/files/5_3.jpg?v=1702469021"
+      },
+      {
+        "name": "Majestic Meadow Artificial Tulip Cluster – Fresh & Lively Faux Blooms",
+        "price": "Rs. 849.00",
+        "description": "Brighten your surroundings with a cheerful cluster of artificial tulips. These vibrant faux tulips bring a fresh burst of color and are perfect for spring-themed decor or any setting that needs a lively, uplifting accent.",
+        "features": {
+          "Height": "60 cm",
+          "Material": "High-Fidelity Polyester",
+          "Colors": ["Red", "Yellow", "Pink", "White"],
+          "Usage": "Ideal for festive decorations and seasonal displays"
+        },
+        "image": "https://bloomingfloret.in/cdn/shop/files/BL130-02.jpg?v=1734594832"
+      },
+      {
+        "name": "Graceful Garden Artificial Daisy Ensemble – Cheerful Faux Flowers",
+        "price": "Rs. 799.00",
+        "description": "Bring a touch of pastoral charm indoors with an ensemble of artificial daisies. Each daisy is designed to reflect the cheerful simplicity of nature, making it a perfect addition to casual living spaces and family gatherings.",
+        "features": {
+          "Height": "45 cm",
+          "Material": "Real-Touch Polyester",
+          "Colors": ["Bright White", "Sunny Yellow", "Soft Blue"],
+          "Usage": "Suitable for everyday home decor"
+        },
+        "image": "https://bloomingfloret.in/cdn/shop/files/BL129-Lavender_3.jpg?v=1734594339"
+      },
+      {
+        "name": "Royal Radiance Artificial Carnation Bouquet – Bold & Beautiful Faux Arrangement",
+        "price": "Rs. 949.00",
+        "description": "Make a bold statement with an artificial carnation bouquet that exudes luxury. Crafted with meticulous detail, these faux carnations are perfect for special events and as a unique gift that radiates sophistication.",
+        "features": {
+          "Height": "55 cm",
+          "Material": "Silk-Polyester Blend",
+          "Colors": ["Burgundy", "Soft Pink", "White", "Deep Orange"],
+          "Usage": "Best for upscale events and gift presentations"
+        },
+        "image": "https://bloomingfloret.in/cdn/shop/files/BL-108-Lavender_Frost_3.jpg?v=1732272344"
+      },
+      {
+        "name": "Enchanted Evergreen Artificial Pine Arrangement – Everlasting Faux Floral Decor",
+        "price": "Rs. 1099.00",
+        "description": "Perfect for festive and year-round charm, this artificial pine arrangement brings the lush, enduring beauty of evergreen trees indoors. Its realistic design makes it an ideal centerpiece for holiday decor or any space requiring a natural accent.",
+        "features": {
+          "Height": "100 cm",
+          "Material": "Premium Polyester",
+          "Colors": ["Deep Green", "Silver Accents"],
+          "Usage": "Suitable for holiday decor and indoor/outdoor settings"
+        },
+        "image": "https://bloomingfloret.in/cdn/shop/files/BL-107-BlueMist.jpg?v=1732268442"
+      },
+      {
+        "name": "Whimsical Wonder Artificial Sunflower Stand – Bright & Cheerful Faux Floral Accent",
+        "price": "Rs. 799.00",
+        "description": "Elevate your home with the radiant charm of an artificial sunflower stand. Designed with lifelike petals and a cheerful demeanor, this faux sunflower instantly brightens any room with its warm and inviting appearance.",
+        "features": {
+          "Height": "65 cm",
+          "Material": "Realistic Polyester",
+          "Colors": ["Sunflower Yellow", "Brown", "Green Leaves"],
+          "Usage": "Perfect for indoor accent pieces and decorative stands"
+        },
+        "image": "https://bloomingfloret.in/cdn/shop/files/BL-107-RoseBlush_1.jpg?v=1732269025"
+      }
+    ]
+  }
+  
