@@ -7,6 +7,9 @@ import Slider from './components/Slider';
 import Cards from './components/Cards';
 import ImgSetup from './components/ImgSetup';
 import ProductPage from './components/ProductPage';
+import CartPage from './components/CartPage';
+import CheckoutPage from './components/CheckoutPage'; // Updated CheckoutPage component
+import { StoreProvider } from './components/StoreContext'; // Ensure StoreProvider is exported from StoreContext
 
 // Home page component
 const Home = () => {
@@ -20,44 +23,22 @@ const Home = () => {
   );
 };
 
-// Placeholder Cart Page component
-const CartPage = () => {
-  return (
-    <>
-      <Navbar />
-      <div className="min-h-screen flex items-center justify-center">
-        <h1 className="text-3xl font-bold">Your Cart</h1>
-      </div>
-    </>
-  );
-};
-
-// Placeholder Checkout Page component
-const CheckoutPage = () => {
-  return (
-    <>
-      <Navbar />
-      <div className="min-h-screen flex items-center justify-center">
-        <h1 className="text-3xl font-bold">Checkout</h1>
-      </div>
-    </>
-  );
-};
-
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Home route */}
-        <Route path="/" element={<Home />} />
-        {/* Product detail route */}
-        <Route path="/product/:id" element={<ProductPage />} />
-        {/* Cart route */}
-        <Route path="/cart" element={<CartPage />} />
-        {/* Checkout route */}
-        <Route path="/checkout" element={<CheckoutPage />} />
-      </Routes>
-    </Router>
+    <StoreProvider>
+      <Router>
+        <Routes>
+          {/* Home route */}
+          <Route path="/" element={<Home />} />
+          {/* Product detail route */}
+          <Route path="/product/:id" element={<ProductPage />} />
+          {/* Cart route */}
+          <Route path="/cart" element={<CartPage />} />
+          {/* Checkout route */}
+          <Route path="/checkout" element={<CheckoutPage />} />
+        </Routes>
+      </Router>
+    </StoreProvider>
   );
 }
 

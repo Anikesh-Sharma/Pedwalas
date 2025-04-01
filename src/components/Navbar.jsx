@@ -1,26 +1,28 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import logo from "/src/assets/logo.png";
-import { CiUser } from "react-icons/ci";
+import { CiUser, CiHeart, CiShoppingTag } from "react-icons/ci";
 import { IoIosSearch } from "react-icons/io";
-import { CiShoppingTag, CiHeart } from "react-icons/ci";
-import { StoreContext } from "./StoreContext"; // adjust the path as needed
+import { StoreContext } from "./StoreContext"; // Adjust the path if needed
 
 const Navbar = () => {
   const { cartCount, wishlistCount } = useContext(StoreContext);
 
   return (
     <div className="flex justify-between py-4 px-8 items-center sticky top-0 bg-white shadow z-50">
-      <img src={logo} className="h-24 rounded-full" alt="Logo" />
+      <Link to="/">
+        <img src={logo} className="h-24 rounded-full cursor-pointer" alt="Logo" />
+      </Link>
 
       <nav className="font-sans font-semibold text-lg">
         <ul className="flex space-x-6">
-          <li>Home</li>
-          <li>Artificial Plants</li>
-          <li>Artificial Flowers</li>
-          <li>Home Décor</li>
-          <li>Gifts</li>
-          <li>About Us</li>
-          <li>Decor Guide</li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/artificial-plants">Artificial Plants</Link></li>
+          <li><Link to="/artificial-flowers">Artificial Flowers</Link></li>
+          <li><Link to="/home-decor">Home Décor</Link></li>
+          <li><Link to="/gifts">Gifts</Link></li>
+          <li><Link to="/about-us">About Us</Link></li>
+          <li><Link to="/decor-guide">Decor Guide</Link></li>
         </ul>
       </nav>
 

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import productsData from "./db.json";
 import Navbar from "./Navbar";
 import Modal from "react-modal";
@@ -33,6 +33,7 @@ const customStyles = {
 
 const ProductPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const product =
     products.find((prod) => prod.id === parseInt(id)) || products[parseInt(id)];
 
@@ -40,23 +41,23 @@ const ProductPage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   // Destructure context methods and data
-  const {
-    cartCount,
-    addToCart,
-    updateQuantity,
-    removeFromCart,
-    cartItems,
-  } = useContext(StoreContext);
+  const { cartItems, addToCart, updateQuantity, removeFromCart } = useContext(StoreContext);
 
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value, 10);
     if (value >= 1) setQuantity(value);
   };
 
-  // Handle "Add to Cart" logic
+  // Handle "Add to Cart" logic and show modal
   const handleAddToCart = () => {
     addToCart(product, quantity);
     setModalIsOpen(true);
+  };
+
+  // Handle "Buy It Now" flow: add product to cart and navigate to checkout
+  const handleBuyNow = () => {
+    addToCart(product, quantity);
+    navigate("/checkout");
   };
 
   if (!product) {
@@ -131,7 +132,7 @@ const ProductPage = () => {
                   Add to Cart
                 </button>
                 <button
-                  onClick={() => alert("Buy Now flow")}
+                  onClick={handleBuyNow}
                   className="border border-gray-300 hover:border-gray-400 text-gray-800 font-semibold px-6 py-2 rounded text-sm"
                 >
                   Buy It Now
