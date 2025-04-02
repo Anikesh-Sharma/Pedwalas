@@ -11,6 +11,7 @@ import CartPage from './components/CartPage';
 import CheckoutPage from './components/CheckoutPage'; // Updated CheckoutPage component
 import { StoreProvider } from './components/StoreContext'; // Ensure StoreProvider is exported from StoreContext
 import ArtificialPlants from "./components/ArtificialPlants";
+import Footer from './components/Footer';
 
 // Home page component
 const Home = () => {
@@ -20,6 +21,7 @@ const Home = () => {
       <Slider />
       <Cards />
       <ImgSetup />
+      <Footer />
     </>
   );
 };
