@@ -10,6 +10,7 @@ import ProductPage from './components/ProductPage';
 import CartPage from './components/CartPage';
 import CheckoutPage from './components/CheckoutPage'; // Updated CheckoutPage component
 import { StoreProvider } from './components/StoreContext'; // Ensure StoreProvider is exported from StoreContext
+import ArtificialPlants from "./components/ArtificialPlants";
 
 // Home page component
 const Home = () => {
@@ -36,6 +37,8 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           {/* Checkout route */}
           <Route path="/checkout" element={<CheckoutPage />} />
+          {/* Artifical-plants route */}
+          <Route path="/artificial-plants" element={<ArtificialPlants />} />
         </Routes>
       </Router>
     </StoreProvider>

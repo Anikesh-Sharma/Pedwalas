@@ -7,13 +7,12 @@ import { StoreContext } from "./StoreContext"; // Adjust the path if needed
 
 const Navbar = () => {
   const { cartCount, wishlistCount } = useContext(StoreContext);
-
+  
   return (
     <div className="flex justify-between py-4 px-8 items-center sticky top-0 bg-white shadow z-50">
       <Link to="/">
         <img src={logo} className="h-24 rounded-full cursor-pointer" alt="Logo" />
       </Link>
-
       <nav className="font-sans font-semibold text-lg">
         <ul className="flex space-x-6">
           <li><Link to="/">Home</Link></li>
@@ -25,7 +24,6 @@ const Navbar = () => {
           <li><Link to="/decor-guide">Decor Guide</Link></li>
         </ul>
       </nav>
-
       <div className="flex space-x-4 items-center">
         <button className="relative focus:outline-none">
           <IoIosSearch size={25} />
@@ -33,29 +31,31 @@ const Navbar = () => {
         <button className="relative focus:outline-none">
           <CiUser size={25} />
         </button>
-
         {/* Wishlist Icon with Badge */}
         <div className="relative">
-          <button className="focus:outline-none">
-            <CiHeart size={25} />
-          </button>
-          {wishlistCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
-              {wishlistCount}
-            </span>
-          )}
+          <Link to="/wishlist">
+            <button className="focus:outline-none">
+              <CiHeart size={25} />
+            </button>
+            {wishlistCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
         </div>
-
         {/* Cart Icon with Badge */}
         <div className="relative">
-          <button className="focus:outline-none">
-            <CiShoppingTag size={25} />
-          </button>
-          {cartCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
-              {cartCount}
-            </span>
-          )}
+          <Link to="/cart">
+            <button className="focus:outline-none">
+              <CiShoppingTag size={25} />
+            </button>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </Link>
         </div>
       </div>
     </div>
