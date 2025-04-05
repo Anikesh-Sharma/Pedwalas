@@ -20,24 +20,58 @@ const ProductPage = () => {
 const { id } = useParams();
 const navigate = useNavigate();
 
+// Fetch products
 const products = productsData.products || productsData;
 const product = products.find((prod) => prod.id === parseInt(id)) || products[parseInt(id)];
 
+// State Management
 const [quantity, setQuantity] = useState(1);
 const [selectedImage, setSelectedImage] = useState(null);
 const [activeSection, setActiveSection] = useState('description');
+const [modalIsOpen, setModalIsOpen] = useState(false);
 
-const { addToCart } = useContext(StoreContext);
+// Context
+const { 
+  addToCart, 
+  addToWishlist, 
+  wishlistItems, 
+  removeFromWishlist 
+} = useContext(StoreContext);
 
+// Check if product is in wishlist
+const isProductInWishlist = wishlistItems.some(item => item.id === product.id);
+
+// Wishlist handler
+const handleWishlistToggle = () => {
+  if (isProductInWishlist) {
+    removeFromWishlist(product.id);
+  } else {
+    addToWishlist(product);
+  }
+};
+
+// Image gallery
+const productImages = [product.image, ...(product.additionalImages || [])];
+
+// Lifecycle effect to set initial selected image
 useEffect(() => {
   setSelectedImage(product.image);
   setQuantity(1);
 }, [product]);
 
+// Add to cart handler
 const handleAddToCart = () => {
   addToCart(product, quantity);
+  setModalIsOpen(true);
 };
 
+// Buy now handler
+const handleBuyNow = () => {
+  addToCart(product, quantity);
+  navigate("/checkout");
+};
+
+// Recommended products
 const recommendedProducts = products
   .filter(p => p.id !== product.id)
   .slice(0, 4);
@@ -58,7 +92,7 @@ return (
           </div>
           
           <div className="flex space-x-4 overflow-x-auto">
-            {[product.image, ...(product.additionalImages || [])].map((img, index) => (
+            {productImages.map((img, index) => (
               <img
                 key={index}
                 src={img}
@@ -118,10 +152,15 @@ return (
             </div>
 
             <button 
-              onClick={() => {}} 
-              className="text-slate-600 hover:text-red-500"
+              onClick={handleWishlistToggle} 
+              className={`text-slate-600 hover:text-red-500 relative ${isProductInWishlist ? 'text-red-500' : ''}`}
             >
               <FaHeart />
+              {isProductInWishlist && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  1
+                </span>
+              )}
             </button>
           </div>
 
@@ -133,7 +172,7 @@ return (
               <FaShoppingCart className="mr-2" /> Add to Cart
             </button>
             <button
-              onClick={() => navigate('/checkout')}
+              onClick={handleBuyNow}
               className="border border-indigo-600 text-indigo-600 py-3 rounded-lg hover:bg-indigo-50 transition"
             >
               Buy Now
@@ -215,6 +254,69 @@ return (
         </div>
       </div>
     </div>
+
+    {/* Add to Cart Modal */}
+    <Modal
+      isOpen={modalIsOpen}
+      onRequestClose={() => setModalIsOpen(false)}
+      style={{
+        content: {
+          top: "50%",
+          left: "50%",
+          right: "auto",
+          bottom: "auto",
+          transform: "translate(-50%, -50%)",
+          borderRadius: "1rem",
+          padding: "2rem",
+          maxWidth: "500px",
+          width: "90%",
+        },
+        overlay: {
+          backgroundColor: "rgba(0,0,0,0.5)",
+          zIndex: 1000,
+        },
+      }}
+    >
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-green-700 flex items-center">
+          <FaCheck className="mr-2 text-green-500" /> Added to Cart
+        </h2>
+        <button onClick={() => setModalIsOpen(false)}>
+          <IoMdClose className="text-2xl text-gray-600" />
+        </button>
+      </div>
+      
+      <div className="flex items-center mb-4">
+        <img 
+          src={product.image} 
+          alt={product.name} 
+          className="w-16 h-16 object-cover rounded mr-4" 
+        />
+        <div>
+          <p className="font-medium">{product.name}</p>
+          <p className="text-gray-600">₹{product.price.toLocaleString()}</p>
+        </div>
+      </div>
+      
+      <div className="flex justify-between mt-6">
+        <button 
+          onClick={() => setModalIsOpen(false)}
+          className="px-4 py-2 border border-green-600 text-green-600 rounded"
+        >
+          Continue Shopping
+        </button>
+        <button 
+          onClick={() => {
+            setModalIsOpen(false);
+            navigate("/cart");
+          }}
+          className="px-4 py-2 bg-green-600 text-white rounded"
+        >
+          View Cart
+        </button>
+      </div>
+    </Modal>
+    
     <Footer />
   </div>
 );

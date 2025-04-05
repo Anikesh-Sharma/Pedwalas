@@ -8,15 +8,9 @@ import productsData from "./db.json";
 
 const products = productsData.products || productsData;
 
-// Function to format price in Indian Rupees
 const formatIndianRupees = (price) => {
-// If price is already a number, convert to string
 const priceString = typeof price === 'number' ? price.toString() : price;
-
-// Remove any existing currency symbols or commas
 const numericPrice = priceString.replace(/[^\d]/g, '');
-
-// Convert to number and format
 return new Intl.NumberFormat('en-IN', {
   style: 'currency',
   currency: 'INR',
@@ -64,71 +58,71 @@ const cardVariants = {
 };
 
 return (
-  <div className="bg-green-50 py-12">
+  <div className="bg-slate-50 py-12">
     <motion.div 
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7 }}
       className="text-center mb-10"
     >
-      <h1 className="text-4xl md:text-6xl font-bold text-green-800 mb-4">
-        Artificial Plant Collection
-      </h1>
-      <p className="text-green-600 text-lg max-w-2xl mx-auto">
-        Bring nature indoors with our stunning, low-maintenance artificial plants
+      <h2 className="text-2xl md:text-3xl font-semibold text-slate-800 mb-2">
+        Featured Products
+      </h2>
+      <p className="text-slate-600 text-base max-w-2xl mx-auto">
+        Discover our stunning collection of artificial plants and flowers
       </p>
     </motion.div>
 
-    <div className="max-w-[1400px] mx-auto px-4">
+    <div className="max-w-7xl mx-auto px-4">
       <Slider {...settings}>
         {products.map((product, index) => (
           <motion.div 
             key={index}
             variants={cardVariants}
             whileHover="hover"
-            className="p-4"
+            className="px-4"
           >
             <div 
-              className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl"
+              className="bg-white rounded-xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg"
               onMouseEnter={() => setHoveredProduct(index)}
               onMouseLeave={() => setHoveredProduct(null)}
             >
               <Link to={`/product/${product.id || index}`}>
-                <div className="relative overflow-hidden">
+                <div className="relative">
                   <motion.img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-64 object-cover transition-transform duration-300 hover:scale-110"
+                    className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
                   />
                   {hoveredProduct === index && (
                     <motion.div 
-                      className="absolute inset-0 bg-green-500 bg-opacity-30 flex items-center justify-center"
+                      className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                     >
-                      <button className="bg-white text-green-800 px-6 py-2 rounded-full hover:bg-green-100 transition">
-                        Quick View
+                      <button className="bg-white text-slate-800 px-4 py-1 rounded-full text-sm hover:bg-indigo-50 transition">
+                        View Details
                       </button>
                     </motion.div>
                   )}
                 </div>
               </Link>
 
-              <div className="p-5 text-center">
-                <h3 className="text-xl font-semibold text-green-900 mb-2">
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-slate-800 mb-1">
                   {product.name}
                 </h3>
-                <div className="flex justify-center items-center space-x-2">
-                  <span className="text-green-700 font-bold text-lg">
+                <div className="flex justify-between items-center">
+                  <span className="text-indigo-600 font-semibold text-base">
                     {formatIndianRupees(product.price)}
                   </span>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition"
+                    className="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm hover:bg-indigo-700 transition"
                   >
                     Add to Cart
                   </motion.button>
