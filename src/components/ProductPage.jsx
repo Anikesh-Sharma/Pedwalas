@@ -1,258 +1,344 @@
-import React, { useState, useContext } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import productsData from "./db.json";
-import Navbar from "./Navbar";
+import React, { useState, useContext, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useParams, useNavigate } from "react-router-dom";
+import { 
+FaHeart, 
+FaShoppingCart, 
+FaStar, 
+FaCheck, 
+FaEye 
+} from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 import Modal from "react-modal";
-import { StoreContext } from "./StoreContext"; // Make sure the path is correct
+import Navbar from "./Navbar";
+import { StoreContext } from "./StoreContext";
+import productsData from "./db.json";
 
-const products = productsData.products || productsData;
-
-// Set the app element for accessibility
+// Set up Modal for the app
 Modal.setAppElement("#root");
 
-// Custom styles for react-modal
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    transform: "translate(-50%, -50%)",
-    padding: "2rem",
-    borderRadius: "1rem",
-    border: "none",
-    boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
-    maxWidth: "600px",
-    width: "90%",
-  },
-  overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.75)",
-    zIndex: 1000,
+const ProductPage = () => {
+const { id } = useParams();
+const navigate = useNavigate();
+
+// Fetch products
+const products = productsData.products || productsData;
+const product = products.find((prod) => prod.id === parseInt(id)) || products[parseInt(id)];
+
+// State Management
+const [quantity, setQuantity] = useState(1);
+const [modalIsOpen, setModalIsOpen] = useState(false);
+const [selectedImage, setSelectedImage] = useState(null);
+const [isWishlisted, setIsWishlisted] = useState(false);
+
+// Context
+const { addToCart, addToWishlist } = useContext(StoreContext);
+
+// Image gallery
+const productImages = [product.image, ...(product.additionalImages || [])];
+
+// Lifecycle effect to set initial selected image
+useEffect(() => {
+  setSelectedImage(product.image);
+}, [product]);
+
+// Handlers
+const handleWishlistToggle = () => {
+  setIsWishlisted(!isWishlisted);
+  addToWishlist(product);
+};
+
+const handleAddToCart = () => {
+  addToCart(product, quantity);
+  setModalIsOpen(true);
+};
+
+const handleBuyNow = () => {
+  addToCart(product, quantity);
+  navigate("/checkout");
+};
+
+// Recommended products
+const recommendedProducts = products
+  .filter((p) => p.category === product.category && p.id !== product.id)
+  .slice(0, 3);
+
+// Animation Variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
   },
 };
 
-const ProductPage = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const product =
-    products.find((prod) => prod.id === parseInt(id)) || products[parseInt(id)];
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 300 },
+  },
+};
 
-  const [quantity, setQuantity] = useState(1);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+// Handle navigation to recommended product
+const handleRecommendedProductClick = (productId) => {
+  navigate(`/product/${productId}`);
+};
 
-  // Destructure context methods and data
-  const { cartItems, addToCart, updateQuantity, removeFromCart } = useContext(StoreContext);
-
-  const handleQuantityChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (value >= 1) setQuantity(value);
-  };
-
-  // Handle "Add to Cart" logic and show modal
-  const handleAddToCart = () => {
-    addToCart(product, quantity);
-    setModalIsOpen(true);
-  };
-
-  // Handle "Buy It Now" flow: add product to cart and navigate to checkout
-  const handleBuyNow = () => {
-    addToCart(product, quantity);
-    navigate("/checkout");
-  };
-
-  if (!product) {
-    return (
-      <>
-        <Navbar />
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-          <h1 className="text-2xl font-bold text-gray-800">Product Not Found</h1>
-        </div>
-      </>
-    );
-  }
-
-  // Hard-coded recommended product (example)
-  const recommendedProduct = {
-    id: 99,
-    name: "Everblooming Manglore Bunch",
-    price: 899,
-    image: "https://via.placeholder.com/200x250?text=Manglore+Bunch",
-  };
-
-  // Find the cart item for this product (if it exists)
-  const cartItem = cartItems.find((item) => item.id === product.id);
-
-  return (
-    <>
-      <Navbar />
-      <div className="min-h-screen bg-gray-50 py-6">
-        <div className="container mx-auto px-4">
-          <div className="bg-white rounded-lg shadow p-6 flex flex-col md:flex-row">
-            {/* Left: Product Image */}
-            <div className="md:w-1/2 mb-4 md:mb-0 md:pr-6 flex justify-center items-center">
+return (
+  <>
+    <Navbar />
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="min-h-screen bg-green-50 py-12"
+    >
+      <div className="container mx-auto px-4">
+        {/* Product Details Section */}
+        <motion.div
+          variants={containerVariants}
+          className="bg-white rounded-2xl shadow-lg overflow-hidden grid md:grid-cols-2 gap-8 p-8"
+        >
+          {/* Image Gallery */}
+          <motion.div variants={itemVariants} className="space-y-4">
+            <motion.div
+              className="main-image overflow-hidden rounded-xl"
+              whileHover={{ scale: 1.05 }}
+            >
               <img
-                src={product.image}
+                src={selectedImage || product.image}
                 alt={product.name}
-                className="w-full h-auto object-cover rounded"
+                className="w-full h-[500px] object-cover"
               />
-            </div>
+            </motion.div>
 
-            {/* Right: Product Details */}
-            <div className="md:w-1/2">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+            {/* Thumbnail Gallery */}
+            <div className="flex space-x-4 overflow-x-auto">
+              {productImages.map((img, index) => (
+                <motion.img
+                  key={index}
+                  src={img}
+                  alt={`Product view ${index + 1}`}
+                  className={`w-20 h-20 object-cover rounded-lg cursor-pointer ${
+                    selectedImage === img ? "border-2 border-green-500" : ""
+                  }`}
+                  onClick={() => setSelectedImage(img)}
+                  whileHover={{ scale: 1.1 }}
+                />
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Product Details */}
+          <motion.div variants={itemVariants} className="space-y-6">
+            <div>
+              <h1 className="text-4xl font-bold text-green-800 mb-4">
                 {product.name}
               </h1>
-              <div className="text-xl text-gray-900 font-semibold mb-3">
-                Rs. {product.price.toLocaleString("en-IN")}.00
-              </div>
-              <p className="text-gray-700 text-sm md:text-base mb-4 leading-relaxed">
-                {product.description || "A perfect choice for your home décor."}
-              </p>
 
-              {/* Quantity Selector */}
+              {/* Rating */}
               <div className="flex items-center mb-4">
-                <label className="mr-4 flex items-center">
-                  <span className="text-gray-700 mr-2 text-sm">Quantity:</span>
-                  <input
-                    type="number"
-                    value={quantity}
-                    min="1"
-                    onChange={handleQuantityChange}
-                    className="w-16 px-2 py-1 border border-gray-300 rounded"
+                {[...Array(5)].map((_, i) => (
+                  <FaStar
+                    key={i}
+                    className={`text-${i < 4 ? "yellow" : "gray"}-400 mr-1`}
                   />
-                </label>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex space-x-4 mb-6">
-                <button
-                  onClick={handleAddToCart}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded text-sm"
-                >
-                  Add to Cart
-                </button>
-                <button
-                  onClick={handleBuyNow}
-                  className="border border-gray-300 hover:border-gray-400 text-gray-800 font-semibold px-6 py-2 rounded text-sm"
-                >
-                  Buy It Now
-                </button>
+                ))}
+                <span className="ml-2 text-gray-600">(4.5)</span>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* React Modal for Cart Summary */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        style={customStyles}
-        contentLabel="Cart Modal"
-      >
-        <div className="relative">
-          {/* Close Button */}
-          <button
-            onClick={() => setModalIsOpen(false)}
-            className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-2xl font-bold"
-          >
-            &times;
-          </button>
-          {/* Modal Title */}
-          <h2 className="text-2xl font-bold text-green-600 mb-4 text-center">
-            Added to Cart!
-          </h2>
-        </div>
-        <div className="mb-4">
-          {cartItem ? (
-            <div className="text-center">
-              <p className="text-md text-gray-700">
-                <strong>
-                  {cartItem.quantity} unit{cartItem.quantity > 1 ? "s" : ""} of {product.name} in your cart.
-                </strong>
-              </p>
-              <div className="flex items-center justify-center space-x-4 mt-3">
-                {/* Decrement Button */}
+            {/* Price and Actions */}
+            <motion.div
+              variants={itemVariants}
+              className="flex justify-between items-center"
+            >
+              <span className="text-3xl font-bold text-green-700">
+                ₹{product.price.toLocaleString()}
+              </span>
+              <div className="flex space-x-4">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={handleWishlistToggle}
+                  className={`p-3 rounded-full ${
+                    isWishlisted
+                      ? "bg-red-100 text-red-500"
+                      : "bg-gray-100 text-gray-600"
+                  }`}
+                >
+                  <FaHeart />
+                </motion.button>
+              </div>
+            </motion.div>
+
+            {/* Quantity Selector */}
+            <motion.div
+              variants={itemVariants}
+              className="flex items-center space-x-4"
+            >
+              <span>Quantity:</span>
+              <div className="flex items-center border rounded-lg">
                 <button
-                  onClick={() => {
-                    if (cartItem.quantity > 1) {
-                      updateQuantity(product.id, cartItem.quantity - 1);
-                    }
-                  }}
-                  className="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="px-4 py-2 text-gray-600"
                 >
                   -
                 </button>
-                <span className="text-lg font-semibold">{cartItem.quantity}</span>
-                {/* Increment Button */}
+                <input
+                  type="number"
+                  value={quantity}
+                  readOnly
+                  className="w-16 text-center"
+                />
                 <button
-                  onClick={() => updateQuantity(product.id, cartItem.quantity + 1)}
-                  className="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300"
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="px-4 py-2 text-gray-600"
                 >
                   +
                 </button>
-                {/* Remove Button */}
-                <button
-                  onClick={() => {
-                    removeFromCart(product.id);
-                    setModalIsOpen(false);
-                  }}
-                  className="ml-4 text-red-600 font-semibold"
-                >
-                  Remove
-                </button>
               </div>
-            </div>
-          ) : (
-            <p className="text-center text-gray-600">No items found in cart.</p>
-          )}
-        </div>
-        <div className="flex items-center justify-between border-t pt-4">
-          {cartItem && (
-            <p className="text-lg font-semibold text-gray-800">
-              Total: Rs. {(product.price * cartItem.quantity).toLocaleString("en-IN")}.00
-            </p>
-          )}
-          <div className="space-x-3">
-            <Link
-              to="/cart"
-              onClick={() => setModalIsOpen(false)}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
+            </motion.div>
+
+            {/* Action Buttons */}
+            <motion.div
+              variants={itemVariants}
+              className="grid grid-cols-2 gap-4"
             >
-              Go to Cart
-            </Link>
-            <Link
-              to="/checkout"
-              onClick={() => setModalIsOpen(false)}
-              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded"
-            >
-              Checkout
-            </Link>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleAddToCart}
+                className="bg-green-600 text-white py-3 rounded-lg flex items-center justify-center space-x-2"
+              >
+                <FaShoppingCart />
+                <span>Add to Cart</span>
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleBuyNow}
+                className="border border-green-600 text-green-600 py-3 rounded-lg"
+              >
+                Buy Now
+              </motion.button>
+            </motion.div>
+
+            {/* Product Description */}
+            <motion.div variants={itemVariants}>
+              <h3 className="text-xl font-semibold mb-2">Description</h3>
+              <p className="text-gray-600">{product.description}</p>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+
+        {/* Recommended Products */}
+        <motion.div
+          variants={containerVariants}
+          className="mt-12 bg-white rounded-2xl p-8"
+        >
+          <h2 className="text-2xl font-bold text-green-800 mb-6">
+            Recommended Products
+          </h2>
+          <div className="grid grid-cols-3 gap-6">
+            {recommendedProducts.map((recProduct) => (
+              <motion.div
+                key={recProduct.id}
+                variants={itemVariants}
+                whileHover={{ scale: 1.05 }}
+                className="bg-green-50 rounded-lg overflow-hidden shadow-md relative group"
+              >
+                <img
+                  src={recProduct.image}
+                  alt={recProduct.name}
+                  className="w-full h-64 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-semibold">{recProduct.name}</h3>
+                  <p className="text-green-700 font-bold">
+                    ₹{recProduct.price.toLocaleString()}
+                  </p>
+                </div>
+                
+                {/* Quick View Overlay */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  <div className="flex space-x-4">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => handleRecommendedProductClick(recProduct.id)}
+                      className="bg-white p-3 rounded-full shadow-lg flex items-center justify-center"
+                    >
+                      <FaEye className="text-green-600" />
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => {
+                        addToCart(recProduct, 1);
+                        setModalIsOpen(true);
+                      }}
+                      className="bg-white p-3 rounded-full shadow-lg flex items-center justify-center"
+                    >
+                      <FaShoppingCart className="text-green-600" />
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            ))}
           </div>
+        </motion.div>
+      </div>
+    </motion.div>
+
+    {/* Add to Cart Modal */}
+    <Modal
+      isOpen={modalIsOpen}
+      onRequestClose={() => setModalIsOpen(false)}
+      style={{
+        content: {
+          top: "50%",
+          left: "50%",
+          right: "auto",
+          bottom: "auto",
+          transform: "translate(-50%, -50%)",
+          borderRadius: "1rem",
+          padding: "2rem",
+          maxWidth: "500px",
+          width: "90%",
+        },
+        overlay: {
+          backgroundColor: "rgba(0,0,0,0.5)",
+          zIndex: 1000,
+        },
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-green-700 flex items-center">
+            <FaCheck className="mr-2 text-green-500" /> Added to Cart
+          </h2>
+          <button onClick={() => setModalIsOpen(false)}>
+            <IoMdClose className="text-2xl text-gray-600" />
+          </button>
         </div>
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">
-            With this product also buy:
-          </h3>
-          <div className="flex items-center space-x-4">
-            <img
-              src={recommendedProduct.image}
-              alt={recommendedProduct.name}
-              className="w-20 h-24 object-cover rounded"
-            />
-            <div>
-              <p className="text-md font-medium text-gray-700">
-                {recommendedProduct.name}
-              </p>
-              <p className="text-md text-gray-600">
-                Rs. {recommendedProduct.price.toLocaleString("en-IN")}.00
-              </p>
-            </div>
-          </div>
-        </div>
-      </Modal>
-    </>
-  );
+      </motion.div>
+    </Modal>
+  </>
+);
 };
 
 export default ProductPage;
