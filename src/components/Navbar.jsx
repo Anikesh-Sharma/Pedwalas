@@ -14,7 +14,7 @@ const menuItems = [
   { name: "Plants", path: "/artificial-plants" },
   { name: "Flowers", path: "/artificial-flowers" },
   { name: "Décor", path: "/home-decor" },
-  { name: "Gifts", path: "/gifts" }
+  { name: "Gifts", path: "/gifts" },
 ];
 
 useEffect(() => {
@@ -22,19 +22,25 @@ useEffect(() => {
     setIsScrolled(window.scrollY > 50);
   };
 
-  window.addEventListener('scroll', handleScroll);
-  return () => window.removeEventListener('scroll', handleScroll);
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
 }, []);
 
 return (
-  <nav className={`fixed w-full top-0 left-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-4' : 'bg-transparent py-6'}`}>
+  <nav
+    className={`fixed w-full top-0 left-0 z-50 transition-all duration-300 ${
+      isScrolled ? "bg-white shadow-md py-4" : "bg-transparent py-6"
+    }`}
+  >
     <div className="container mx-auto px-4 flex justify-between items-center">
       {/* Logo */}
       <Link to="/" className="flex items-center">
-        <img 
-          src={logo} 
-          alt="Logo" 
-          className={`rounded-full transition-all duration-300 ${isScrolled ? 'h-12 w-12' : 'h-16 w-16'}`}
+        <img
+          src={logo}
+          alt="Blooming Flore Logo"
+          className={`rounded-full transition-all duration-300 ${
+            isScrolled ? "h-12 w-12" : "h-16 w-16"
+          }`}
         />
       </Link>
 
@@ -53,21 +59,21 @@ return (
 
       {/* Icons */}
       <div className="flex items-center space-x-4">
-        <Link 
+        <Link
           to="/search"
           className="text-slate-600 hover:text-indigo-600"
           aria-label="Search"
         >
           <FaSearch size={20} />
         </Link>
-        <Link 
+        <Link
           to="/profile"
           className="text-slate-600 hover:text-indigo-600"
           aria-label="Profile"
         >
           <FaUser size={20} />
         </Link>
-        <Link 
+        <Link
           to="/wishlist"
           className="text-slate-600 hover:text-indigo-600 relative"
           aria-label="Wishlist"
@@ -79,7 +85,7 @@ return (
             </span>
           )}
         </Link>
-        <Link 
+        <Link
           to="/cart"
           className="text-slate-600 hover:text-indigo-600 relative"
           aria-label="Cart"
@@ -94,8 +100,10 @@ return (
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden text-slate-600"
+          className="md:hidden text-slate-600 focus:outline-none"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
+          aria-expanded={isMobileMenuOpen}
         >
           {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>
@@ -104,12 +112,12 @@ return (
 
     {/* Mobile Menu */}
     {isMobileMenuOpen && (
-      <div className="md:hidden px-4 py-2 space-y-1">
+      <div className="md:hidden px-4 py-2 space-y-1 bg-white shadow-md">
         {menuItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
-            className="block py-2 text-slate-600 hover:text-indigo-600"
+            className="block py-2 text-slate-600 hover:text-indigo-600 transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             {item.name}
